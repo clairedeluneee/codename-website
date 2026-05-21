@@ -31,6 +31,9 @@
             ["3d/index", "3D Rendering - UNFINISHED <span style='color: #489fb7;'>(WIP)</span>"]
         ]]
     ]],
+    ["tutorials/index", "Useful Tutorials - UNFINISHED", [
+        ["weeks", "Making weeks - <span style='color: #32e53a;'>(Complete)</span>"]
+    ]],
     ["source/index", "Source Modding - UNFINISHED", [
         ["init", "Initalization - UNFINISHED"]
     ]]
