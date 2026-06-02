@@ -1,8 +1,8 @@
 ---
-author: Edwin
+author: Edwin & ItsLJcool
 desc: Complete guide to creating custom weeks for your Codename Engine mod
 title: Making Weeks
-lastUpdated: 2026-05-20T00:00:00.000Z
+lastUpdated: 2026-06-02T02:54:30.672Z
 ---
 
 # Making Weeks
@@ -192,3 +192,25 @@ Before your week works, make sure you have:
 ---
 
 That's it! You now know how to create custom weeks.
+
+Now, what if you want to make your own Custom Week State? Well you can always grab all the week data with the [StoryWeeklist](../../api-docs/funkin/menus/StoryWeeklist) class!
+```haxe
+// import the Class from `funkin.menus.StoryMenuState.hx`
+import funkin.menus.StoryWeeklist;
+
+// StoryWeeklist.get(orderByTxt:Bool, loadCharacterData:Bool);
+// So if it's (true, false), it will sort the week by the `weeks.txt`, and won't include character data.
+var weekList:StoryWeeklist = StoryWeeklist.get(true, false);
+var weeks:Array<WeekData> = weekList.weeks;
+
+// you can optionally make it 1 variable by doing:
+var weeks:Array<WeekData> = StoryWeeklist.get(true, false).weeks; 
+// since you don't need the actual class instance for anything besides getting the data 99.999% of the time.
+```
+
+The `weeks` array contains all the Week XML data as a [`WeekData`](../../api-docs/funkin/backend/week/WeekData) typedef / structure.<br>
+You can then use this to get all the songs in the week, the name, id, difficulties, etc. This will allow you to make your own Custom Week State, and load into a Week through PlayState with the [`loadWeek`](../../api-docs/funkin/game/PlayState#loadWeek) function!
+```haxe
+PlayState.loadWeek(weeks[0]); // loads the first week into PlayState
+FlxG.switchState(new PlayState()); // Then we load PlayState to start the week!
+```
