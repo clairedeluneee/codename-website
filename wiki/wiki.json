@@ -14,7 +14,7 @@
             ["playstate", "PlayState Interaction - UNFINISHED"],
             ["states", "Custom States / SubStates - <span style='color: #d4b528;'>(Semi-Complete)</span>"],
             ["events", "Custom Events / Notetypes - <span style='color: #d4b528;'>(Semi-Complete)</span>"],
-            ["global", "Global Script - UNFINISHED"],
+            ["global", "Global Script - <span style='color: #32e53a;'>(Complete)</span>"],
             ["classes", "Custom Classes - <span style='color: #32e53a;'>(Complete)</span>"]
         ]],
         ["editors/index", "Editors - UNFINISHED", [
