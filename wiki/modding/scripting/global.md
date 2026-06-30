@@ -1,81 +1,106 @@
 ---
-author: rufius
+author: rufius & ItsLJcool
 desc: Explains what a GlobalScript is, and how to effectivly use it.
 lastUpdated: 2026-06-05T06:00:45.809Z
-title: Scripting - GlobalScript
+title: Scripting - Global Script
 ---
 
-# `GlobalScript`
+# What is a `GlobalScript`?
 
-`GlobalScript` is perhaps one of the more powerful scripts that can be loaded by a mod, and it's usually expected to find one in a larger mod. A `GlobalScript` generally lives under `data/global.hx`.
+`GlobalScript` is perhaps one of the more powerful script that can be loaded by a mod, and it's most commonly the first file generated in your mod. You can make a `GobalScript` by making a script file at `./data/global.hx`.
 
-It is safe to say that `GlobalScript` is perhaps the most powerful kind of script that can be loaded into a mod. There are several capabilities that a `GlobalScript` may perform:
+When your mod loads up, GlobalScript is one of the very first scripts to be executed, this script will persist throughout the entire mod, and will never be destroyed or become inactive (unless you manually tell it to). Once your mod is no longer loaded, it will be removed alongside it.
 
-# Hot Reloading
-
-Codename can reload `GlobalScript`s by holding `Shift` and pressing the "Reload State" keybind.
-
-It is also generally safe to simply switch mods to reload `GlobalScript`s.
+With this power, you can manage your entire Mod with this singular script, and is one of the many crucial components in building a sucessful backend structure for yourself, and as a utility.
 
 # Callbacks
 
-`GlobalScript`s can run code in various stages of a mod. `new` will always be executed upon a `GlobalScript` being loaded:
+There is only a few functions that `GlobalScript` manages itself, though you can call custom functions yourself from other scripts by doing `GlobalScript.call("functionName", [/* arguments */])`.<br>
+Although there really should be no reason to call functions directly to `GlobalScript`, it's there if you really need it.
+
+<!-- region -->
+<details>
+    <summary>Here is a list of callbacks GlobalScript manages</summary>
+
+- `focusGained()`
+- `focusLost()`
+- `gameResized(w:Int, h:Int)`
+
+- `preDraw()`
+- `postDraw()`
+
+- `preGameReset()`
+- `postGameReset()`
+
+- `preGameStart()`
+- `postGameStart()`
+
+- `preStateCreate(state:FlxState)`
+
+- `preStateSwitch()`
+- `postStateSwitch()`
+
+- `preUpdate(elapsed:Float)`
+- `update(elapsed:Float)`
+- `postUpdate(elapsed:Float)`
+
+- `beatHit(curBeat:Int)`
+- `stepHit(curStep:Int)`
+
+- `destroy()`
+
+</details>
+<!-- endregion -->
+
+# Hot Reloading
+
+Codename can reload `GlobalScript`s by holding `Shift` and pressing the "Reload State" keybind. By default this is `Shift` + `F5`.<br>
+Doing this will destroy and re-initalize all `GlobalScript`s, so you need to ensure you properly `destroy` things or remove them once the script is no longer active.
+
+You should always do this in a `GlobalScript`, to ensure unloading your Mod never causes any issues with other mods / addons.
+<div style="display: grid; justify-content: left;">
 
 ```haxe
-function new()
-    trace("Hello, World!");
+function destroy() {
+	trace("AAAAH IM BEING REMOVED!!!!");
+}
 ```
-
-A more prominent use case is `preStateSwitch`. This callback allows for a large amount of control over fine-tuning a state before actually switching to it, as it runs precisely before the state is put into effect.
-
-```haxe
-function preStateSwitch()
-    trace("Hello, new state!");
-```
+</div>
 
 # Cross-script Communication
 
-`GlobalScript` maintains its own `ScriptPack` that is _freely accessible_ as `GlobalScript.scripts` to every script, because it is provided as a public, static variable.
+`GlobalScript` maintains it's own `ScriptPack` that is <b>_freely accessible_</b> as `GlobalScript.scripts` as a `static` variable.
 
-What this allows for is a rather unhinged amount of possibilities of using `GlobalScript` for communicating between scripts or saving session-wide data.
+You can manage the whole `ScriptPack` anywhere in your mod, but for simplicity you should use `GlobalScripts.scripts` only if you need to access either a specific script inside, or internal variables. Using the `public` modifier in `GlobalScript` should never be used, as it only allows other `GlobalScripts` to access it, so it does nothing for your mod.
 
-For example, let's say a `PlayState Script` wants to set a variable to be used further down the session. A `GlobalScript` may declare this variable, and the variable can then be used across the entire mod:
+You can either make `static` variables / functions inside your `GlobalScript` to call anywhere, or just normal functions you can then call with `GlobalScript.call`.
+It's common to think that you should shove everything that you want to use globally in a Global Script, but that is bad practice.
 
-```haxe
-// We define this variable in data/global.hx...
-public var evilEffects:Bool = false;
+You should only use `GlobalScript` for managing custom classes, or holding data globally. You don't need to manage anything here either!
+You can also use `GlobalScript` to execute code on Mod Launch.
 
-// We can verify that evilEffects is being set by tracing its value on every state switch.
-function preStateSwitch()
-    trace(evilEffects);
-```
+Here is a basic example on how you should use `GlobalScript` to it's fullest potential.
+<div style="display: grid; justify-content: center;">
 
 ```haxe
-// And lo and behold! So long as we import GlobalScript ourselves, we have access to the entirety of the GlobalScript's public properties.
-import funkin.backend.scripting.GlobalScript;
+function apiFunc() {
+	trace("API!");
+}
 
-function create()
-    GlobalScript.scripts.publicVariables["evilEffects"] = true; // Switch states and you'll find that this persists, so long as the GlobalScript is in effect!
-```
-
-The inclusion of `GlobalScript.scripts` also allows for an unusually large amount of communication between addons and mods.
-
-This is because the scripts from every active mod will be handled by a single `ScriptPack`, which is at play for `GlobalScript` as well.
-
-With this in mind, you are entirely free to effectively provide an API for an addon that can be used by other mods:
-
-```haxe
-// Do know that, in order for ScriptPack.call to work with this function, we can't use the public modifier.
-function apiFunc()
-    trace("API!");
+function apiCalc(number_1:Int, number_2:Int) {
+	trace('$number_1 + $number_2 = ${(number_1 + number_2)}!');
+}
 ```
 
 ```haxe
 import funkin.backend.scripting.GlobalScript;
 
-function create()
-    GlobalScript.scripts.call("apiFunc", []); // API!
+function create() {
+	GlobalScript.scripts.call("apiFunc", []); // API!
+	GlobalScript.scripts.call("apiCalc", [9, 10]); // 9 + 10 = 19!
+}
 ```
+</div>
 
 Next steps in learning the In-and-out's of HScript
 
