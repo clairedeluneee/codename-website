@@ -1,5 +1,5 @@
 ---
-author: ItsLJcool
+author: clairedeluneee
 desc: This page explains how to fix common issues.
 lastUpdated: 2026-01-31T23:07:30.946Z
 title: Troubleshooting
@@ -16,13 +16,23 @@ This usually means the game failed to start. The reasons for this could be:
 
 The solution is to move the folder somewhere else on the disk.
 
+## Mod refuses to load
+
+Double check your mod folder.
+
+If it looks like this,
+
+<img src="./images/troubleshooting/improper-folder-extract.png" alt="Mod folder containing another folder that has the folders CNE needs">
+
+then enter that folder and move its contents up a level (place everything on the right to the middle).
+
 ## No audio
 You probably muted the game. Hit `0` or `+` on your keyboard.
 
-## Invalid field
+## Invalid field error
 Some players might have found out that after a song, the game crashes with this error:
 
-<img src="./images/Troubleshooting/invalid-field.png" alt="Error with invalid field" style="width:85%;">
+<img src="./images/troubleshooting/invalid-field.png" alt="Error with invalid field" style="width:85%;">
 
 This is a save data error in which saves from Legacy (v0.1) are not recognized in v1.0. The fix is to wipe the save in Options > Miscellaneous > Reset save data.
 
