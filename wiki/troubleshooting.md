@@ -42,3 +42,32 @@ The folder to be deleted is
 - Windows: `%AppData%/CodenameEngine`
 - Mac: `Users/[your user]/Library/Application Support/CodenameEngine`
 - Linux: `/.local/share/CodenameEngine`
+
+## Modding
+### Notes only on the left side of the screen
+
+Change the strumline X position of the second strumline to be 0.75 in the Chart Editor. New strumlines use the X position of 0.25 by default.
+
+### Setting a sprite's `velocity` / `acceleration` does nothing
+
+If you had set this property using the `<property />` tag in the stage XML, you need to set `sprite.moves` to `true`.
+
+This field is `false` by default for optimization reasons, since it would be wasteful if it runs on stationary sprites.
+
+### Character / stage editor is buggy
+
+Every editor except for the Chart Editor is buggy and unfinished. It's better that you manually edit the XML in the meantime.
+
+### Strum rotation also moves notes
+
+Set `strum.noteAngle` to 0.
+
+### Atlas animations not working
+
+This is caused by multiple reasons, but the most common one is that you're using `sprite.animation.play("anim")` as opposed to `sprite.playAnim("anim")`. If you're using the raw `FlxAnimate` class then use `sprite.anim.play("anim")` instead.
+
+### `stage` variable not working
+
+This happens in stage scripts. The issue is that you have a sprite with the name "stage" which causes conflicts. 
+
+To fix this, rename that sprite to something else.
