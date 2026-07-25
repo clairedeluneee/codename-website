@@ -1,7 +1,7 @@
 [
     ["index", "Home"],
     ["differences", "Differences between other FNF engines"],
-    ["usage", "How does one use the engine?"],
+    ["usage", "How does one use the engine? <span style='color: #d4b528;'>(Needs Links)</span>"],
     ["faq", "<span style='color: #43a1aa;'>FAQ</span>"],
     ["troubleshooting", "Troubleshooting - <span style='color: #32e53a;'>(Updated)</span>"],
     ["modding/index", "Modding The Engine - <span style='color: #d4b528;'>(33% Complete)</span>", [
@@ -14,11 +14,11 @@
             ["playstate", "PlayState Interaction - UNFINISHED"],
             ["states", "Custom States / SubStates - <span style='color: #d4b528;'>(Semi-Complete)</span>"],
             ["events", "Custom Events / Notetypes - <span style='color: #d4b528;'>(Semi-Complete)</span>"],
-            ["global", "Global Script - UNFINISHED"],
-            ["classes", "Custom Classes - UNFINISHED"]
+            ["global", "Global Script - <span style='color: #32e53a;'>(Complete)</span>"],
+            ["classes", "Custom Classes - <span style='color: #32e53a;'>(Complete)</span>"]
         ]],
         ["editors/index", "Editors - UNFINISHED", [
-            ["chart", "Chart Editor - UNFINISHED"],
+            ["chart", "Chart Editor - <span style='color: #32e53a;'>(Complete)</span>"],
             ["character", "Character Editor - UNFINISHED"],
             ["stage", "Stage Editor - UNFINISHED"],
             ["alphabet", "Alphabet Editor - UNFINISHED"],
@@ -30,6 +30,9 @@
             ["ndll", "NDLLS - UNFINISHED"],
             ["3d/index", "3D Rendering - UNFINISHED <span style='color: #489fb7;'>(WIP)</span>"]
         ]]
+    ]],
+    ["tutorials/index", "Useful Tutorials - UNFINISHED", [
+        ["weeks", "Making weeks - <span style='color: #32e53a;'>(Complete)</span>"]
     ]],
     ["source/index", "Source Modding - UNFINISHED", [
         ["init", "Initalization - UNFINISHED"]

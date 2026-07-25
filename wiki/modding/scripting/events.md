@@ -9,6 +9,7 @@ title: Scripting - Custom Events and Notetypes
 <!-- 
 my guy i fucking thought this was about custom chart events bruh :wilted_rose: 
 -->
+
 # Creating Custom Events
 As is with anything else in this engine, custom events may be created to aid with various stuff that happens in songs. They also inherit `CancellableEvent`, which means they may be overriden like other events.
 

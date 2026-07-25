@@ -12,7 +12,7 @@ Explain all the features scripts can use. (i.e getter / setter, enums, imports, 
 First, lets start off very basic. HScript provides 2 different ways to define a variable, but do note, <i>technically</i> it doesn't matter as they both are the same anyways.<br>
 To define a variable you can use the `var` and `final` keywords before the variable's name. You cannot have whitespace for variable names.
 <!-- This just makes it so the whole block doesn't take the whole screen up :) -->
-<div style="display: grid; justify-content: left;"> 
+<div style="display: grid; justify-content: left;">
 
 ```haxe
 var myVariable:Bool = true;
@@ -20,6 +20,16 @@ final my_final:Bool = true;
 
 // Not valid syntax and will cause a Null Object Reference.
 var my cool variable:Bool = false;
+```
+</div>
+
+<div style="display: grid; justify-content: left;">
+
+Every `HScript` / `Script` will always execute the `new` function whenever it loads the script.
+```haxe
+function new() {
+	trace("I have loaded!");
+}
 ```
 </div>
 

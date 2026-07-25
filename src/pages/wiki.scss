@@ -257,3 +257,15 @@ blockquote {
     color: #8e7a9a;
   }
 }
+
+table {
+  border-collapse: collapse;
+}
+
+table, th, td {
+	border: white 2px solid;
+}
+
+td {
+	padding: 5px 5px 5px 5px;
+}
