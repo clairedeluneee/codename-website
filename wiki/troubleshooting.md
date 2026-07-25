@@ -1,7 +1,7 @@
 ---
 author: clairedeluneee
 desc: This page explains how to fix common issues.
-lastUpdated: 2026-01-31T23:07:30.946Z
+lastUpdated: 2026-07-25T03:15:36.494Z
 title: Troubleshooting
 ---
 # Troubleshooting
