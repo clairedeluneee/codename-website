@@ -1,5 +1,5 @@
 ---
-author: rufius & ItsLJcool
+author: rufius & ItsLJcool & HeroEyad
 desc: Explains what a GlobalScript is, and how to effectivly use it.
 lastUpdated: 2026-06-05T06:00:45.809Z
 title: Scripting - Global Script
@@ -7,7 +7,7 @@ title: Scripting - Global Script
 
 # What is a `GlobalScript`?
 
-`GlobalScript` is perhaps one of the more powerful script that can be loaded by a mod, and it's most commonly the first file generated in your mod. You can make a `GobalScript` by making a script file at `./data/global.hx`.
+`GlobalScript` is perhaps one of the more powerful script that can be loaded by a mod, and it's most commonly the first file generated in your mod. You can make a `GlobalScript` by making a script file at `./data/global.hx`.
 
 When your mod loads up, GlobalScript is one of the very first scripts to be executed, this script will persist throughout the entire mod, and will never be destroyed or become inactive (unless you manually tell it to). Once your mod is no longer loaded, it will be removed alongside it.
 
@@ -102,6 +102,46 @@ function create() {
 ```
 </div>
 
+
+or... you can just straight up call them without `GlobalScript.scripts.call`!
+<div style="display: grid; justify-content: center;">
+
+```haxe
+function create() {
+	apiFunc(); // API!
+	apiCalc(9, 10); // 9 + 10 = 19!
+}
+```
+</div>
+
+
+Here's another example on how variables and functions works on `GlobalScript`
+
+On `global.hx`
+<div style="display: grid; justify-content: center;">
+
+```haxe
+static var balance:Int = 0;
+
+static function addMoney(amount:Int) {
+	balance += amount;
+	trace("Added " + amount " to balance!");
+}
+```
+</div>
+
+on any script!
+<div style="display: grid; justify-content: center;">
+
+```haxe
+function create() {
+	trace("Balance before: " + balance); // Balance before: 0
+	addMoney(300); // Added 300 to balance!
+	trace("Balance after: " + balance); // Balance after: 300
+}
+```
+
+</div>
 Next steps in learning the In-and-out's of HScript
 
 - [Features](./features.md)
