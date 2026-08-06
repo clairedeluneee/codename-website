@@ -71,3 +71,9 @@ This is caused by multiple reasons, but the most common one is that you're using
 This happens in stage scripts. The issue is that you have a sprite with the name "stage" which causes conflicts. 
 
 To fix this, rename that sprite to something else.
+
+### Game can't find assets for my stage
+
+You might have put `folder="/images/stages/whatever"`. The stage XML's `folder` attribute actually has the game start looking in `/images`.
+
+This means that if you put `folder="/stages/cliffside"`, it looks for assets in `/images/stages/cliffside`.
