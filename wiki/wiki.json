@@ -7,7 +7,7 @@
     ["modding/index", "Modding The Engine - <span style='color: #d4b528;'>(33% Complete)</span>", [
         ["config", "Configuration"],
         ["libraries", "OpenFL's AssetLibrary"],
-        ["scripting/index", "Scriping (Softcoding) - <span style='color: #d4b528;'>(20% Complete)</span>", [
+        ["scripting/index", "Scripting (Softcoding) - <span style='color: #d4b528;'>(20% Complete)</span>", [
             ["features", "Features / Examples - UNFINISHED"],
             ["style", "Formatting, and Basic Syntax - UNFINISHED"],
             ["cancellables", "Event Callbacks - UNFINISHED"],
