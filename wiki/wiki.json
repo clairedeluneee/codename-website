@@ -26,7 +26,7 @@
         ]],
         ["hxvlc", "Using hxvlc for Videos - UNFINISHED"],
         ["advanced/index", "Advanced Topics - UNFINISHED", [
-            ["shaders", "Shaders - UNFINISHED"],
+            ["shaders", "Shaders - <span style='color: #32e53a;'>(Updated)</span>"],
             ["ndll", "NDLLS - UNFINISHED"],
             ["3d/index", "3D Rendering - UNFINISHED <span style='color: #489fb7;'>(WIP)</span>"]
         ]]
