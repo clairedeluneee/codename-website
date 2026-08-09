@@ -28,7 +28,7 @@
 			["video_cutscene", "Video Cutscenes - <span style='color: #d4b528;'>TODO</span>"]
 		]],
         ["advanced/index", "Advanced Topics - UNFINISHED", [
-            ["shaders", "Shaders - <span style='color: #d4b528;'>TODO</span>"],
+            ["shaders", "Shaders - <span style='color: #32e53a;'>(Updated)</span>"],
             ["ndll", "NDLLS - <span style='color: #d4b528;'>TODO</span>"],
             ["3d/index", "3D Rendering <span style='color: #489fb7;'>(WIP)</span>"]
         ]]
