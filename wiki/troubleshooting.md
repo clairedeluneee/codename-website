@@ -1,5 +1,5 @@
 ---
-author: clairedeluneee
+author: clairedeluneee & ItsLJcool
 desc: This page explains how to fix common issues.
 lastUpdated: 2026-07-25T03:15:36.494Z
 title: Troubleshooting
@@ -20,14 +20,16 @@ The solution is to move the folder somewhere else on the disk.
 
 Double check your mod folder.
 
-If it looks like this,
-
+If it looks like this:
 <img src="./images/troubleshooting/improper-folder-extract.png" alt="Mod folder containing another folder that has the folders CNE needs">
 
-then enter that folder and move its contents up a level (place everything on the right to the middle).
+Then enter your mod folder and move its contents up a level (place everything on the right to the middle).
+It should be the folder structure similar of `./mods/Your Mod/data/`.
 
 ## No audio
 You probably muted the game. Hit `0` or `+` on your keyboard.
+
+Can't use `0` or `+`? You installed a VERY old CodenameEngine Action build that broke it! Go to Controls to rebind the keys!
 
 ## Invalid field error
 Some players might have found out that after a song, the game crashes with this error:
