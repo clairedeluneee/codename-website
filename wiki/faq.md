@@ -55,13 +55,13 @@ Our organization consists of having multiple owners cuz why separate people into
 
 ## <h2 id="something-not-working-bug" sidebar="I found a bug">Something is not working or I found a bug!</h2>
 
-If you found a bug, please report it on the [GitHub repository](https://github.com/CodenameCrew/CodenameEngine/issues) or on [Discord](https://discord.com/servers/codename-engine-860561967383445535).
+If you found a bug, please report it on the [GitHub repository](https://github.com/CodenameCrew/CodenameEngine/issues) or on [Discord](https://discord.gg/codename-crew).
 
 ## <h2 id="suggest-feature-change" sidebar="Feature Suggestion">I want to suggest a feature or change something!</h2>
 
-Please suggest it on [Discord](https://discord.com/servers/codename-engine-860561967383445535).
+Please suggest it on [Discord](https://discord.gg/codename-crew).
 
 ## <h2 id="unanswered-question" sidebar="Unanswered Question">I have a question that isn't answered here!</h2>
 
-Please ask the question on [Discord](https://discord.com/servers/codename-engine-860561967383445535).
+Please ask the question on [Discord](https://discord.gg/codename-crew).
 Or leave it in the discussions below.
