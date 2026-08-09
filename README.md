@@ -1,4 +1,28 @@
-# Codename Engine Website
+# Codename Engine Website - Wiki Reformat Branch!
+
+Welcome to the Wiki Reformat branch! This is attempting to consolidate information on current CodenameEngine features, and streamline the introduction modding process.
+
+To help Contribute, make a Fork and go ham!
+
+Please note; when making very short codeblocks, to attempt to use `<div>` to cut the codeblock short, or center it to make it look pretty and easier to read.
+Example (excuse the Indent, it looks wonky otherwise!!):
+```md
+<div style="display: grid; justify-content: left;">
+<!-- Required to have a newline here! Or it explodes, trust me. -->
+
+```haxe
+import hxvlc.util.Handle;
+
+function new() {
+	Handle.init();
+}
+	```
+</div>
+<!-- No extra newline at the end though... we love Markdown! -->
+```
+
+
+## Now; we return to your regularly scheduled CodenameEngine Readme
 
 **To contribute to this wiki's pages**, please go to ``wiki/``, and change the .md files (if you add a new one make sure to add it in ``wiki/wiki.json``.)
 
