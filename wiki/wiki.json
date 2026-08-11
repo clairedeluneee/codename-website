@@ -36,7 +36,7 @@
     ["tutorials/index", "Useful Tutorials - UNFINISHED", [
         ["weeks", "Making weeks - <span style='color: #32e53a;'>(Complete)</span>"]
     ]],
-    ["source/index", "Source Modding - UNFINISHED", [
-        ["init", "Initalization - <span style='color: #d4b528;'>TODO</span>"]
+    ["source/index", "Source Modding - <span style='color: #32e53a;'>(Complete)</span>", [
+        ["init", "Initalization - <span style='color: #32e53a;'>(Complete)</span>"]
     ]]
 ]
