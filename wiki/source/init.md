@@ -1,7 +1,7 @@
 ---
 author: ItsLJcool, Skylime_
 desc: Explains how to initalize the repository
-lastUpdated: 2025-11-15T05:32:50.298Z
+lastUpdated: 2026-08-11T16:07:08.844Z
 title: Modding The Engine - Source Modding
 ---
 
