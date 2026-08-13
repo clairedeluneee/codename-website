@@ -18,7 +18,8 @@ If you're still going, then here's everything you need to get the engine compili
 
 - **Git.** Get `git-scm` and leave the installer options at it's default.
 
-- **A C++ compiler.** `hxcpp` turns your Haxe into native code, and that needs a compiler.On Windows, that's Visual Studio Build Tools 2019 or newer, and in the Individual Components tab, you want the ***MSVC v143 C++ x64/x86 build tools*** plus the ***Windows SDK***. It's roughly ~1GB to download and ~5.5GB installed. On Linux, you want `g++` and `gcc`, plus `libvlc` for video support. On MacOS, you want `Xcode`.
+- **A C++ compiler.** `hxcpp` turns your Haxe into native code, and that needs a compiler.
+	- On Windows, that's Visual Studio Build Tools 2019 or newer, and in the Individual Components tab, you want the ***MSVC v143 C++ x64/x86 build tools*** plus the ***Windows SDK***. It's roughly ~1GB to download and ~5.5GB installed. On Linux, you want `g++` and `gcc`, plus `libvlc` for video support. On MacOS, you want `Xcode`.
 
 - **The engine's libraries.** Run `setup-windows.bat` on Windows, or `setup-unix.sh` on Linux and MacOS. Both are in the `building/` folder. Let it finish ***completely***. **Important**: ***don't run `haxelib upgrade` afterwards.*** The engine uses its own forks of Lime, OpenFL, Flixel and hscript, and upgrading swaps them for the normal versions. Things then break in ways that are *very* annoying to track down.
 

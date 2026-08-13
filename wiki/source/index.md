@@ -6,16 +6,24 @@ title: Modding The Engine - Source Modding
 ---
 
 # An Introduction To Source Modding
+#### ⚠️ WARNING ⚠️
+Source modding is *NOT* the normal way to make a mod, and it's not what you should reach for first.
 
-Quick warning before anything else. Source modding is *NOT* the normal way to make a mod, and it's not what you should reach for first. It's something you do when softcoding *genuinely can't* do what you're trying to do, and even then you use *both together*.
+Prioritize making a Modpack before interacting with source, as compiling CodenameEngine should be really one of these things:
+- Making a Feature Request
+- Fixing an Issue
+- Embedding Assets
+- Custom Source build for things Scripting can't currently achieve
 
-## What it actually is
+Even if you do go for Source modding, you should still prioritize making a Modpack for rapid development, and once you know it all works then you can compile it into Source.
+
+If your making stuff like Features, Bug Fixes, etc. Then don't worry about this.
+
+## Difference Between "Source" and "Softcoding"
 
 **Softcoding** means you write hscript (`.hx`) files inside your mod folder. The engine reads them while it's running. You save the file, you reload the state, and the change is there.
 
-**Source modding** means you *fork the engine itself*, edit its Haxe code, compile the whole thing, and get your own copy of the game.
-
-Codename Engine is built specifically so that softcoding can do *basically everything* source coding can. You can assume the thing you want already exists *until you've properly checked*.
+**Source Modding** means you *fork the engine itself*, edit the `./source/` folder, and compiling it to get an export of an Executable.
 
 ## What this guide covers
 
@@ -23,32 +31,34 @@ This page is pretty much the overview. It goes over what source modding actually
 
 If you've read all of it and still want to go ahead, [Initialization](./init.md) covers getting Haxe, git, a compiler and the engine's libraries set up so you can actually build.
 
-## Now, why it isn't recommended
+## Now, why it isn't recommended?
 
 - Whatever version you forked the repo on, you keep forever. The engine updates won't be free any longer. Every new release is now a merge you do by hand and retest yourself.
 
 - You also lose compatibility with other mods. Softcoded mods stack on top of each other. Two source mods can never be installed together. That's just how it is.
 
-- A tweak that takes three seconds in hscript now costs you a rebuild. Over a whole project that adds up more than anything else on this list, and it makes your mod worse because experimenting stops being quick.
+- A tweak that takes three seconds in HScript now costs you a rebuild. Over a whole project that adds up more than anything else on this list, and it makes your mod worse because experimenting stops being quick.
 
-- Every bug becomes yours. Crash reports don't go to the engine devs anymore. They come to you, on your fork, with your changes. People can't turn your changes off. Softcoded stuff can be disabled or overridden. Compiled stuff can't.
+- Every bug becomes yours. Crash reports don't go to the engine devs anymore. They are yours to deal with on your fork, with your changes.
 
-- There's no safety net. Hscript errors get caught and shown to you. A null in compiled code just takes the game down, which is NOT what you want, and it makes life harder for anyone helping you.
+- There's no safety net. HScript errors get caught and shown to you. A null in compiled code just takes the game down, which is NOT what you want, and it makes life harder for anyone helping you.
 
-## The good parts
+## Pro's of Source Modding
 
 - Full access. Literally.
 
-- It's genuinely faster, since you don't have an interpreter running every frame for the rest of your hscripts, which is a real bottleneck in some cases.
-- You can change engine level behaviour that has no script hook at all, and you get build time control through `project.xml` defines and conditional compilation.
+- Compiled down to bytecode, means faster execution and multithreading is opened up. HScript's Interpreter is about 100x <b>SLOWER</b> than bytecode.
 
-## The bad parts
+- You can think of it as a HaxeFlixel Template Project. You can change whatever to fit your needs.
 
-- The longer you go without updating, the worse it gets, and the more you lose on fixes or changes.
+## Con's of Source Modding
 
-- No compatibility with other source mods, and reduced compatibility with addons.
+- Syncing your Fork with `main` usually causes conflicts, so you are most likely stuck on Release Versions or Experimental Commits.
 
-- Slow iteration, which as mentioned, costs you more than you'd think.
+- Your Modpack is *most likely* not compatable with Official Releases of CodenameEngine, you'd need to add extra code to ensure it doesn't explode on Main.
+	- You don't have to do this, since the point of you Source Modding would be only releasing the executable only.
+
+- Slow iteration, (costs you more than you'd think)
 
 - You own every crash, including ones in code you never touched, and it's harder to hand off. *Anyone* can pick up a softcoded mod. A fork needs someone willing to maintain a fork.
 
@@ -57,8 +67,7 @@ If you've read all of it and still want to go ahead, [Initialization](./init.md)
 When you make a change, try to implement things that will *clearly benefit you while softcoding*.
 But before anything, *check if what you're trying to do isn't already there*. Check the documentations. Trust me, there is loads of stuff you can't miss.
 
-## If you publish it, you have to open source it
-
+## You must make your fork Public when releasing your mod!
 This is a *rule* you have to keep up with.
 
 You need to keep *credits and attribution intact*, so **don't strip the credits menu or the splash**.
