@@ -30,7 +30,8 @@
         ["advanced/index", "Advanced Topics - UNFINISHED", [
             ["shaders", "Shaders - <span style='color: #32e53a;'>(Updated)</span>"],
             ["ndll", "NDLLS - <span style='color: #d4b528;'>TODO</span>"],
-            ["3d/index", "3D Rendering <span style='color: #489fb7;'>(WIP)</span>"]
+            ["3d-legacy/index", "3D Rendering (Away3D) <span style='color: #489fb7;'>(Archived)</span>"],
+            ["3d/index", "3D Rendering (Foxlite) <span style='color: #489fb7;'>(WIP)</span>"]
         ]]
     ]],
     ["tutorials/index", "Useful Tutorials - UNFINISHED", [

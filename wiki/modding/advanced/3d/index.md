@@ -1,194 +1,73 @@
 ---
-author: OfficialCB
-desc: This page explains how to use 3D rendering in your mod!
+author: clairedeluneee, Whisper
+desc: This page explains how Foxlite can be used for 3D rendering for your mod.
 lastUpdated: 2026-03-03T20:36:15.789Z
-title: Advanced Topics - 3D with Away3D!
+title: Advanced Topics - 3D with Foxlite
 ---
-# TODO:
-Add info about the 3D scene itself, like the camera
-Add more info about different kinds of materials and how lights work
 
-# 3D rendering
+# "The hell's Foxlite?"
+Foxlite is a 3D renderer for HaxeFlixel that replaces the built-in Away3D renderer, designed to be hardware-accelerated (you get more FPS) and features a flexible rendering pipeline that basically means that your 3D scenes can be photorealistic.
 
-In Codename Engine, there is Away3D integration with a few tools to make the process easier for you.
+## "Great, now what makes this different from Away3D?"
+The primary difference Foxlite has from Away3D is that, apart from being feature-rich (with more features to come), the setup required is much less than what's needed for Away3D, and comes with reduced jank.
 
-If you want to read up on Away3D and how it works, I recommend looking at it's [Github Repository](https://github.com/openfl/away3d) or looking at the [Documentation](http://away3d.com/documentation/).
+From the repository in the [project's GitHub](https://github.com/dwdvIl/foxlite), the following features are also included:
 
-## Working with primitives
+- `glTF` support, which also includes `.glb` files, handy for containing the materials of your models and whatnot inside one glorified zip file.
+- Dynamic lighting, shadows, and a customizable shape for area lights. Yes, you can use a picture of a cat for area lights.
+- Materials are pushed into shaders, allowing you to use the same material on multiple shaders. They are part of the batching system Foxlite has, meaning meshes that use the same material tend to give more frames.
+- Skeletal animations and instancing. You can, in fact, place 500 pears on the scene without your iGPU giving out.
+- Support for motion vectors and Forward+ shaders. In Layman's terms, scenes may be photoreal if you want it to be.
+- Animation engine built from the ground up, allowing **any** object to be animated with its linking system, with animation layering and 3 mix nodes at your disposal.
 
-Primitives are built-in meshes that are simple in nature.  
-Examples of primitives are Cubes, Planes, or Spheres.
+# Prerequisites
+- A copy of Codename Engine that has Foxlite.
+  - To be exact, Foxlite replaced Away3D in commit `8378ae0` in the `internal-merge` branch.
+  - As of writing, [v1.1.0-rc2](https://github.com/CodenameCrew/CodenameEngine/releases/tag/v1.1.0-rc2) is the latest version with Foxlite integration. You may grab this, but it's highly advised to turn to the latest Experimental builds, as there might be bugs in `rc2` that were only fixed in later commits.
+- A GPU (either discrete or integrated) that supports OpenGL 2.1.
+- Any code editor of your choosing.
+- A 3D modeling software capable of exporting to Wavefront `.obj` files.
+  - Blender 5.1.2 is recommended and will be used for this guide.
 
-Here's an example of adding a Cube Primitive to your scene.
+# Putting a model in Foxlite
+## Blender 
+When you're ready to export a model for Foxlite, export it as an `.obj` file.
+
+To do this in Blender, you click `File` > `Export` > `Wavefront (.obj)` Make sure that the *Triangulated Mesh* checkbox is checked under Geometry.
+
+## Codename
+
+### Foxlite initialization
+Foxlite must first be initialized before it can be used. Below is something you can put as a global script:
 ```haxe
-import flx3d.Flx3DView;
-
-import away3d.entities.Mesh;
-import away3d.primitives.CubeGeometry;
-
 function create() {
-    cube = new Mesh(new CubeGeometry()); // This is your Cube
-
-    cube.scale(2); // Make it double the size, just to see it better
-
-	cube.rotationY = 23; // Add some rotation so you can see it's 3D
-	cube.rotationX = 45;
-
-    scene3D = new Flx3DView(0, 0, FlxG.width, FlxG.height); // This is what's creating the 3D world
-	scene3D.screenCenter();
-    
-    scene3D.addChild(cube); // This adds the cube to the scene
-
-    add(scene3D); // The 3D View works just like any other sprite so it will have to be added like one
+  FoxRenderer.initLibs();
+  FoxLoaderUtil.initPathClass(Paths);
 }
 ```
+Do note that this has to only be ran once.
 
-If you wanna add a texture to this primitive, you'll need to create a `TextureMaterial`.
-Here's the same code as before, but we add a `TextureMaterial` to the cube.
+### Basic scene setup
+The simplest way of showing off models is via a [custom state](../../scripting/states.md), which we will use for this guide. Nobody is stopping you from implementing this in a song script, but it's easier to use a custom state.
+
+You will need the following imports and variables:
 ```haxe
-import flx3d.Flx3DView;
+import foxlite.renderer.FoxRenderer;
+import foxlite.loaders.FoxLoaderUtil;
+import foxlite.FoxScene;
+import foxlite.extras.FoxFPSCamera;
 
-import away3d.entities.Mesh;
-import away3d.primitives.CubeGeometry;
+var scene:FoxScene;
+var cam:FoxFPSCamera;
+```
 
-import away3d.utils.Cast;
-import away3d.materials.TextureMaterial;
+The `scene` variable extends `FunkinSprite` and will be what displays in-game. 
 
+```haxe
 function create() {
-    cube = new Mesh(new CubeGeometry()); // This is your Cube
-
-    cube.material = new TextureMaterial(
-        Cast.bitmapTexture(
-            Assets.getBitmapData(Paths.image("path/to/texture"))
-        ), 
-        true, // This is "smooth" or "antialiasing" for the texture, setting this to false will make it pixelated
-        false, // This is "repeat" and it's useful if you want your texture to tile over a large area, to make it tile, set it to true
-        true // This is "mipmap" which pretty much makes your texture become less detailed the further away it is
-    );
-
-    cube.scale(2); // Make it double the size, just to see it better
-
-	cube.rotationY = 23; // Add some rotation so you can see it's 3D
-	cube.rotationX = 45;
-
-    scene3D = new Flx3DView(0, 0, FlxG.width, FlxG.height); // This is what's creating the 3D world
-	scene3D.screenCenter();
-    
-    scene3D.addChild(cube); // This adds the cube to the scene
-
-    add(scene3D); // The 3D View works just like any other sprite so it will have to be added like one
+    scene = new FoxScene(FlxG.width, FlxG.height);
+    scene.zoomFactor = 0;
+    scene.scrollFactor.set(0, 0);
+    add(scene);
 }
 ```
-
-## Working with models
-
-From now on, assume that `scene3D` is set up like this as I will not be writing out the entire script anymore.
-```haxe
-scene3D = new Flx3DView(0, 0, FlxG.width, FlxG.height);
-```
-
-Adding models is greatly simplified in Codename Engine compared to using Away3D normally.  
-To add a model simply do the following.
-```haxe
-scene3D.addModel(
-    Paths.obj("path/to/model"), // This is where it grabs the model from, I will go into more detail about this below
-
-    function (model) {
-        // This runs for every single asset inside of your model, including mesh, potential animators, and whatever else you could have going on
-
-        // If you want to manipulate your model in any way, do it in here
-    },
-
-    Paths.image("path/to/texture"), // This is the texture of your model
-
-    true // This is "smoothTexture" which determines if your texture will be filtered or if it should be pixelated
-);
-```
-
-You can also set a variable to be your mesh this way.
-```haxe
-var coolModel;
-
-scene3D.addModel(
-    Paths.obj("path/to/model"),
-
-    function (model) {
-        // This runs for every single asset inside of your model, including mesh, potential animators, and whatever else you could have going on
-
-        if (Std.string(model.asset.assetType) == 'mesh') { // This is needed to specify that we're specifically interacting with the Mesh of the object instead of interacting with any animations or skeletons on accident
-            coolModel = model.asset;
-        }
-    },
-
-    Paths.image("path/to/texture"),
-
-    true
-);
-```
-
-In the examples above, I used `Paths.obj()` to grab the model, however, there are more model types that are supported, some of which have more features.
-
-The list of supported formats are these:
-- `obj`
-- `dae`
-- `md2`
-- `md5`
-- `awd`
-
-The `AWD` format is specific to Away3D's Away Builder.
-Away Builder is a program designed to simplify a lot of complex work with importing models and animations into your project.
-However, since Away Builder is so old, it is now mainly depricated and doesn't really work with most modern software.
-Instead, you are often required to use the `md5mesh` and `md5anim` formats, which do not exist in most programs today.
-There are however workarounds, as older versions of Blender have [addons](https://github.com/KozGit/Blender-2.8-MD5-import-export-addon) to let you export to these formats.
-
-
-I will not go through how to use Away Builder here as it is not specific to Codename Engine.
-
-The `AWD` format is useful as it allows you to package models, animations, and more into one asset which all get loaded together automatically.
-
-***TODO: Go into more detail about the pros and cons of each formats listed above***
-
-## Animating your models
-
-To animate your models, I recommend using the `AWD` format alongside Away Builder since it simplifies the process of setting up the animators.
-
-However, some precautions about Away3D.
-It's animation is quite limited and doesn't allow for animations changing size or position, only rotation is available.
-
-Once you have your model and animations exported from Away Builder, you'll want to set it up something like this:
-```haxe
-var coolModel;
-
-var coolAnimator;
-
-scene3D.addModel(
-    Paths.obj("path/to/model"),
-
-    function (model) {
-        // This runs for every single asset inside of your model, including mesh, potential animators, and whatever else you could have going on
-
-        if (Std.string(model.asset.assetType) == 'mesh') { // This is so we only interact with the Mesh
-            coolModel = model.asset;
-        }
-
-        if (Std.string(model.asset.assetType) == 'animator') { // To only interact with the Animator
-            coolAnimator = model.asset;
-
-            animatorLoaded();
-            
-            // FYI, you can play the animation directly in here if you want, I just keep them separate for demonstration purposes
-            // model.asset.play("animationName");
-        }
-    },
-
-    Paths.image("path/to/texture"),
-
-    true
-);
-
-function animatorLoaded() {
-    coolAnimator.play("animationName");
-}
-```
-
-Once you have your animator, you can simply call it's `play("animName")` function whenever you wanna play an animation.
