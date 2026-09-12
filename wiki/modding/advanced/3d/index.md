@@ -35,6 +35,8 @@ When you're ready to export a model for Foxlite, export it as an `.obj` file.
 
 To do this in Blender, you click `File` > `Export` > `Wavefront (.obj)` Make sure that the *Triangulated Mesh* checkbox is checked under the Geometry section before exporting.
 
+You may also export the model as a `.gltf` or a `.glb` if you prefer.
+
 ## Codename
 
 ### Foxlite initialization
@@ -66,6 +68,7 @@ var cam:FoxFPSCamera;
 ```
 
 The `scene` variable extends `FunkinSprite` and will be the "window" between Flixel's worldspace and Foxlite's scene. Think of it as a television that, for now, won't display anything because we have not told it what to display.
+<div style="display: grid; justify-content: left;">
 
 ```haxe
 function create() {
@@ -75,6 +78,7 @@ function create() {
     add(scene);
 }
 ```
+</div>
 
 Notice that the `scene`'s `zoomFactor` and `scrollFactor` fields were set to 0. This is because `FoxScene`s inherit `FunkinSprite`'s properties and move and scale with the camera's position and zoom respectively.
 
@@ -102,6 +106,8 @@ scene.foxCameras.push(cam);
 
 The full `create` function at this point should look like this:
 
+<div style="display: grid; justify-content: left;">
+
 ```haxe
 function create() {
     // Foxlite initialization
@@ -122,6 +128,7 @@ function create() {
     scene.foxCameras.push(cam);
 }
 ```
+</div>
 
 ### Cleanup
 To prevent memory leaks, the scene must be destroyed to free up the memory it allocates.
@@ -134,5 +141,66 @@ This can be done through this snippet:
 function destroy() {
     scene?.destroy();
 }
+```
+</div>
+
+### Adding a model in the `.OBJ` format
+Models exported to the Wavefront (`.obj`) format may be imported in one of two ways: using the dedicated `FoxOBJLoader` class or via the `loadOBJ` method found in `FoxModel` instances. Either can be used to load these, but for this guide, the latter will be used.
+
+<div style="display: grid; justify-content: left;">
+
+```haxe
+model.loadOBJ("path/to/model.obj");
+```
+</div>
+
+To add this model to the scene, you treat the model like adding a sprite to the camera, like so:
+
+<div style="display: grid; justify-content: left;">
+
+```haxe
+scene.add(model);
+```
+</div>
+
+`insert` and `remove` methods are also available for `FoxScene` which function similarly to how Flixel does it.
+
+By default, `FoxCamera`s and `FoxModel`s appear at coordinates (0, 0, 0) if you have not set them beforehand.
+
+### Adding a model in the `.GLTF` / `.GLB` format
+
+`.gltf` models function similarly to `.obj` models, except they are more optimized for web rendering due to its size and how they can fit roughly all details of a scene, as well as the fact that `.glb`s are simply zip files that contain both the scene and the materials it uses.
+
+To import a `.gltf` model or a `.glb` model, use the `FoxGLTFLoader` class, then depending on what you exported it as, use either `.load` for `.gltf`s, or `.loadBinary` for `.glb`s.
+
+<div style="display: grid; justify-content: left;">
+
+```haxe
+var gltfModel = FoxGLTFLoader.load("path/to/model.gltf"); // for gltfs
+// or 
+var gltfModel = FoxGLTFLoader.loadBinary("path/to/model.glb"); // for glbs
+```
+</div>
+
+Once the model is loaded, you can access them as whole FoxObjectGroups via .scenes
+And you can add them to your scene like this:
+
+<div style="display: grid; justify-content: left;">
+
+```haxe
+scene.add(gltfModel.scenes[index]);
+```
+</div>
+
+#### Animations
+`.gltf`s (and by extension, `.glb`s) contain a dedicated player at the root of the object which contains all the animations of the model in Blender.
+
+You can play one by doing this:
+
+<div style="display: grid; justify-content: left;">
+
+```haxe
+var player:FoxAnimationPlayer = gltfModel.scenes[0].animation;
+player.play("<your anim name>");
 ```
 </div>
