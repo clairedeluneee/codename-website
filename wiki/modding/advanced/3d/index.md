@@ -5,6 +5,8 @@ lastUpdated: 2026-03-03T20:36:15.789Z
 title: Advanced Topics - 3D with Foxlite
 ---
 
+<!-- todo: add images -->
+
 # "The hell's Foxlite?"
 Foxlite is a 3D renderer for HaxeFlixel that replaces the built-in Away3D renderer, designed to be hardware-accelerated (you get more FPS) and features a flexible rendering pipeline that basically means that your 3D scenes can be photorealistic.
 
@@ -167,7 +169,7 @@ scene.add(model);
 
 By default, `FoxCamera`s and `FoxModel`s appear at coordinates (0, 0, 0) if you have not set them beforehand.
 
-### Adding a model in the `.GLTF` / `.GLB` format
+### Adding a model in the `.gLTF` / `.gLB` format
 
 `.gltf` models function similarly to `.obj` models, except they are more optimized for web rendering due to its size and how they can fit roughly all details of a scene, as well as the fact that `.glb`s are simply zip files that contain both the scene and the materials it uses.
 
@@ -204,3 +206,170 @@ var player:FoxAnimationPlayer = gltfModel.scenes[0].animation;
 player.play("<your anim name>");
 ```
 </div>
+
+# Instancing
+
+Want 500 pears? You definitely can make that happen.
+
+Instancing allows rendering multiple meshes in a single draw call, boosting performance by having the GPU compute everything for you.
+
+As well as the model you want to instance (for this session, we will use a model of pear exported in `/models/pear/pear.obj`), you will need the following classes:
+
+<div style="display: grid; justify-content: left;">
+
+```haxe
+import foxlite.FoxInstancedModel;
+import openfl.geom.Vector3D;
+```
+</div>
+
+For the instance to work, we need to supply a mesh to it, this can be done by copying the .meshes property from a `FoxModel`, or loading mesh data from an `OBJ` or `glTF` file.
+
+Load the model and its mesh...
+<div style="display: grid; justify-content: left;">
+
+```haxe
+var pearData = FoxOBJLoader.load("models/pear/pear.obj");
+var pearMeshes = pearData.meshes;
+```
+</div>
+
+...then make the instanced model (for this example, let's say 1000 pears)...
+
+<div style="display: grid; justify-content: left;">
+
+```haxe
+var instanced = new FoxInstancedModel(1000);
+scene.add(instanced);
+```
+</div>
+
+...then assign the meshes to the instanced model.
+
+<div style="display: grid; justify-content: left;">
+
+```haxe
+instanced.meshes = pearMeshes;
+```
+</div>
+
+## Updating the instances
+By default, all instances render in the **same position**, we have to change it per-instance to see them individually.
+
+We can do this by iterating over each instance, and calling the functions:
+
+<div style="display: grid; justify-content: left;">
+
+```haxe
+for(i in 0...instanced.instanceCount) {
+    var position = new Vector3D();
+    // Move each instance to a random xyz position
+    position.x = (Math.random()*2-1) * 5;
+    position.y = (Math.random()*2-1) * 5;
+    position.z = (Math.random()*2-1) * 5;
+  
+    // Set position, rotation and scale
+    // By default, rotation is 0 (radians) and scale is 1
+    instanced.setInstanceTransformSeparate(i, position, new Vector3D(), new Vector3D(1, 1, 1));
+    // We can also set a FlxColor for each instance:
+    instanced.setInstanceFlxColor(i, FlxColor.LIME);
+}
+```
+</div>
+
+## Optimizing the models
+Instancing comes with a cost which is more hefty with integrated graphics, especially with dynamic lighting and more than a few vertices in your model.
+
+It's at this point where you can optimize the render pipeline by running this code:
+
+<div style="display: grid; justify-content: left;">
+
+```haxe
+for(material in pearData.materials) material.culling = FoxTriangleFace.BACK;
+// This removes most light types except for the sun and uses no shadows
+FoxShader.GLOBAL_FLAGS = [
+    "MAX_DIRECTIONAL_LIGHTS=1",
+    "MAX_POINT_LIGHTS=0",
+    "MAX_SPOT_LIGHTS=0",
+    "MAX_AREA_LIGHTS=0",
+    "NO_ALPHA_SCISSOR",
+    "NO_SHADOW_CODE"
+];
+```
+</div>
+
+At this point, the code should look similar to this:
+
+<div style="display: grid; justify-content: left;">
+
+```haxe
+function create() {
+    // Initialization
+    FoxRenderer.initLibs();
+    FoxLoaderUtil.initPathClass(Paths);
+    FoxShader.GLOBAL_FLAGS = [
+        "MAX_DIRECTIONAL_LIGHTS=1",
+        "MAX_POINT_LIGHTS=0",
+        "MAX_SPOT_LIGHTS=0",
+        "MAX_AREA_LIGHTS=0",
+        "NO_ALPHA_SCISSOR",
+        "NO_SHADOW_CODE"
+    ];
+    
+    // Scene
+    scene = new FoxScene(FlxG.width, FlxG.height);
+    scene.zoomFactor = 0;
+    scene.scrollFactor.set(0, 0);
+    add(scene); 
+    scene.environment.ambientLight = FlxColor.GREEN;
+    var light = new FoxDirectionalLight();
+    light.angleX = -30;
+    scene.add(light);
+    
+    // Camera
+    cam = new FoxFPSCamera();
+    cam.bgColor = FlxColor.GRAY;
+    scene.foxCameras.push(cam);
+
+    // Instanced model
+    var pearData = FoxOBJLoader.load("models/pear/pear.obj");
+    var pearMeshes = pearData.meshes;
+    for(m in pearData.materials) m.culling = FoxTriangleFace.BACK;
+    var instanced = new FoxInstancedModel(1000);
+    instanced.meshes = pearMeshes;
+    scene.add(instanced);
+    for(i in 0...instanced.instanceCount) {
+        var position = new Vector3D();
+        // Move each instance to a random xyz position
+        position.x = (Math.random()*2-1) * 5;
+        position.y = (Math.random()*2-1) * 5;
+        position.z = (Math.random()*2-1) * 5;
+    
+        // Set position, rotation and scale
+        // By default, rotation is 0 (radians) and scale is 1
+        instanced.setInstanceTransformSeparate(i, position, new Vector3D(), new Vector3D(1, 1, 1));
+    }
+
+    // Add render metrics (completely optional but informative)
+    add(new FoxRenderMetrics());
+}
+```
+</div>
+
+## Updating the instances (in real time)
+Instanced models have 3 modes of updating, those being
+
+- `ONE_BY_ONE` where instances are updated one after another that's useful when updating only a *few* instances,
+- `ALL` which updates ***EVERY SINGLE INSTANCE*** simultaneously regardless if some of these are even modified, and 
+- `CHUNK` which updates, well, a chunk of instances, which is useful if you're updating instances in a specific area.
+
+By default, the mode is set to `ONE_BY_ONE`, but may be changed by importing `foxlite.instancing.FoxInstanceUpdateMode` and changing the instanced model's mode like so:
+
+<div style="display: grid; justify-content: left;">
+
+```haxe
+instanced.updateMode = FoxInstanceUpdateMode.<mode>;
+```
+</div>
+
+where `<mode>` is either one of the three mentioned above.
