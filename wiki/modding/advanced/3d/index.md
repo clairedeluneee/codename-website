@@ -1,5 +1,5 @@
 ---
-author: clairedeluneee, Whisper
+author: clairedeluneee, Whisper, dwdvIl
 desc: This page explains how Foxlite can be used for 3D rendering for your mod.
 lastUpdated: 2026-03-03T20:36:15.789Z
 title: Advanced Topics - 3D with Foxlite
@@ -33,18 +33,22 @@ From the repository in the [project's GitHub](https://github.com/dwdvIl/foxlite)
 ## Blender 
 When you're ready to export a model for Foxlite, export it as an `.obj` file.
 
-To do this in Blender, you click `File` > `Export` > `Wavefront (.obj)` Make sure that the *Triangulated Mesh* checkbox is checked under Geometry.
+To do this in Blender, you click `File` > `Export` > `Wavefront (.obj)` Make sure that the *Triangulated Mesh* checkbox is checked under the Geometry section before exporting.
 
 ## Codename
 
 ### Foxlite initialization
 Foxlite must first be initialized before it can be used. Below is something you can put as a global script:
+<div style="display: grid; justify-content: left;">
+
 ```haxe
 function create() {
   FoxRenderer.initLibs();
   FoxLoaderUtil.initPathClass(Paths);
 }
 ```
+</div>
+
 Do note that this has to only be ran once.
 
 ### Basic scene setup
@@ -61,7 +65,7 @@ var scene:FoxScene;
 var cam:FoxFPSCamera;
 ```
 
-The `scene` variable extends `FunkinSprite` and will be what displays in-game. 
+The `scene` variable extends `FunkinSprite` and will be the "window" between Flixel's worldspace and Foxlite's scene. Think of it as a television that, for now, won't display anything because we have not told it what to display.
 
 ```haxe
 function create() {
@@ -71,3 +75,64 @@ function create() {
     add(scene);
 }
 ```
+
+Notice that the `scene`'s `zoomFactor` and `scrollFactor` fields were set to 0. This is because `FoxScene`s inherit `FunkinSprite`'s properties and move and scale with the camera's position and zoom respectively.
+
+### Cameras
+To render to your scene, a `FoxCamera` must be instantiatied. For this guide, an extension of this class known as `FoxFPSCamera` is used, which allows you to move the camera around in the scene. 
+
+- WASD is used for lateral movement.
+- Hold down Left Shift to move faster.
+- Hold click and drag to pan the camera around.
+<div style="display: grid; justify-content: left;">
+
+```haxe
+cam = new FoxFPSCamera();
+cam.bgColor = FlxColor.PURPLE;
+```
+</div>
+
+To add this to the scene, call
+<div style="display: grid; justify-content: left;">
+
+```haxe
+scene.foxCameras.push(cam);
+```
+</div>
+
+The full `create` function at this point should look like this:
+
+```haxe
+function create() {
+    // Foxlite initialization
+    FoxRenderer.initLibs();
+    FoxLoaderUtil.initPathClass(Paths);
+
+    // Scene
+    scene = new FoxScene(FlxG.width, FlxG.height);
+    scene.zoomFactor = 0;
+    scene.scrollFactor.set(0, 0);
+    add(scene);
+
+    // Camera
+    cam = new FoxFPSCamera();
+    cam.bgColor = FlxColor.PURPLE;
+
+    // Add our camera to the scene
+    scene.foxCameras.push(cam);
+}
+```
+
+### Cleanup
+To prevent memory leaks, the scene must be destroyed to free up the memory it allocates.
+
+This can be done through this snippet:
+
+<div style="display: grid; justify-content: left;">
+
+```haxe
+function destroy() {
+    scene?.destroy();
+}
+```
+</div>
