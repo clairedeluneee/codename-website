@@ -376,3 +376,18 @@ instanced.updateMode = FoxInstanceUpdateMode.<mode>;
 </div>
 
 where `<mode>` is either one of the three mentioned above.
+
+## Changing instance count
+Upon creation, Foxlite will allocate as much memory as it's needed to contain the amount of instances you had set in the constructor, and will adjust the number of `draw()` calls per instance depending on the instanced model's `instanceCount`. Should `instanceCount` exceed the allocated size, a new buffer is created, which means ***ALL*** instance transforms are lost. In this case, you will have to redo these transforms.
+
+This means that the maximum amount of instances you can have while retaining all transforms will be whatever you had set in the constructor. 
+
+<div style="display: grid; justify-content: left;">
+
+```haxe
+var instancedModel = new FoxInstancedModel(16); // max of 16 models
+instancedModel.instanceCount = 15; // still good
+instancedModel.instanceCount = 16; // still good but this is the limit; we cant add any more without losing transforms
+instancedModel.instanceCount = 17; // new buffer is created here; all instance transforms have been lost
+```
+</div>
