@@ -1,7 +1,7 @@
 ---
 author: clairedeluneee, Whisper, dwdvIl
 desc: This page explains how Foxlite can be used for 3D rendering for your mod.
-lastUpdated: 2026-03-03T20:36:15.789Z
+lastUpdated: 2026-09-12T22:48:00.000Z
 title: Advanced Topics - 3D with Foxlite
 ---
 
@@ -23,9 +23,12 @@ From the repository in the [project's GitHub](https://github.com/dwdvIl/foxlite)
 - Animation engine built from the ground up, allowing **any** object to be animated with its linking system, with animation layering and 3 mix nodes at your disposal.
 
 # Prerequisites
+
+Before starting, make sure that you have the following:
+
 - A copy of Codename Engine that has Foxlite.
-  - To be exact, Foxlite replaced Away3D in commit `8378ae0` in the `internal-merge` branch.
-  - As of writing, [v1.1.0-rc2](https://github.com/CodenameCrew/CodenameEngine/releases/tag/v1.1.0-rc2) is the latest version with Foxlite integration. You may grab this, but it's highly advised to turn to the latest Experimental builds, as there might be bugs in `rc2` that were only fixed in later commits.
+  - To be exact, Foxlite replaced Away3D in commit `8378ae0` in the now archived `internal-merge` branch.
+  - As of writing, v1.1.0-rc3 is the latest version with Foxlite integration. You may grab this, but it's highly advised to turn to the latest Experimental builds, as there might be bugs in `rc3` that were only fixed in later commits.
 - A GPU (either discrete or integrated) that supports OpenGL 2.1.
 - Any code editor of your choosing.
 - A 3D modeling software capable of exporting to Wavefront `.obj` files.
@@ -133,7 +136,7 @@ function create() {
 </div>
 
 ### Cleanup
-To prevent memory leaks, the scene must be destroyed to free up the memory it allocates.
+To prevent memory leaks, the scene must be destroyed to free up the memory it allocates. While `destroy` is automatically called when switching states, you should still call it just in case.
 
 This can be done through this snippet:
 
@@ -146,7 +149,7 @@ function destroy() {
 ```
 </div>
 
-### Adding a model in the `.OBJ` format
+### Adding a `.obj` model
 Models exported to the Wavefront (`.obj`) format may be imported in one of two ways: using the dedicated `FoxOBJLoader` class or via the `loadOBJ` method found in `FoxModel` instances. Either can be used to load these, but for this guide, the latter will be used.
 
 <div style="display: grid; justify-content: left;">
@@ -169,7 +172,7 @@ scene.add(model);
 
 By default, `FoxCamera`s and `FoxModel`s appear at coordinates (0, 0, 0) if you have not set them beforehand.
 
-### Adding a model in the `.gLTF` / `.gLB` format
+### Adding a`.gLTF` / `.gLB` model
 
 `.gltf` models function similarly to `.obj` models, except they are more optimized for web rendering due to its size and how they can fit roughly all details of a scene, as well as the fact that `.glb`s are simply zip files that contain both the scene and the materials it uses.
 
@@ -184,7 +187,7 @@ var gltfModel = FoxGLTFLoader.loadBinary("path/to/model.glb"); // for glbs
 ```
 </div>
 
-Once the model is loaded, you can access them as whole FoxObjectGroups via .scenes
+Once the model is loaded, you can access them as whole FoxObjectGroups via `.scenes`
 And you can add them to your scene like this:
 
 <div style="display: grid; justify-content: left;">
