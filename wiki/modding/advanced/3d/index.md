@@ -391,3 +391,14 @@ instancedModel.instanceCount = 16; // still good but this is the limit; we cant 
 instancedModel.instanceCount = 17; // new buffer is created here; all instance transforms have been lost
 ```
 </div>
+
+# Rendering Pipeline
+## Rendermodes
+Only supported in custom vertex buffers or in `.gltf` models.
+- 0 (`gl.POINTS`) draws points.
+- 1 (`gl.LINES`) draws lines between a pair of vertices.
+- 2 (`gl.LINE_LOOP`) are similar to 1 except the last vertex is also connected to the first.
+- 3 (`gl.LINE_STRIP`) draws a straight line to the next vertex, except this one connects **ALL** vertices.
+- 4 (`gl.TRIANGLES`) renders a triangle connecting three vertices. **This is the default.**
+- 5 (`gl.TRIANGLE_STRIP`) draws a triangulated polygon.
+- 6 (`gl.TRIANGLE_FAN`) draws triangles where one of its vertices is *always* the first, similar to a pizza slice sort of mesh.
